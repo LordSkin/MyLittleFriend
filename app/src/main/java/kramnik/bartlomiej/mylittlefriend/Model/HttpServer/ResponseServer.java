@@ -17,11 +17,9 @@ import fi.iki.elonen.NanoHTTPD;
 
 public class ResponseServer extends NanoHTTPD {
 
-    Activity a;
 
-    public ResponseServer(Activity context) {
+    public ResponseServer() {
         super(8080);
-        a = context;
         try {
             start();
         }
@@ -32,25 +30,20 @@ public class ResponseServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        Log.d("aaaaaaaaaaaaaaaaa","aaaaaaaaaaaaaaaaaaaa");
-        a.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(a, "TO gowno działa!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Log.d("HTTP Server","request reciwed");
+
         try{
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(session.getInputStream()));
-            String body="";
-            String line ="";
-            while ((line=bufferedReader.readLine())!=null){
-                body +=line;
-            }
-            body.charAt(1);
+            Integer contentLength = Integer.parseInt(session.getHeaders().get("content-length"));
+            byte[] buffer = new byte[contentLength];
+            session.getInputStream().read(buffer, 0, contentLength);
+            String x =new String(buffer);
+
+
+
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return super.serve(session);
+        return NanoHTTPD.newFixedLengthResponse("dupa");
     }
 }
