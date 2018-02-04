@@ -1,4 +1,4 @@
-package kramnik.bartlomiej.mylittlefriend.SelectAgent;
+package kramnik.bartlomiej.mylittlefriend.View.SelectAgent;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import kramnik.bartlomiej.mylittlefriend.R;
-import kramnik.bartlomiej.mylittlefriend.SendCommands.SendCommandsActivity;
+import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsActivity;
 
 public class SelectAgentActivity extends AppCompatActivity implements View.OnClickListener {
 

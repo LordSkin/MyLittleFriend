@@ -27,7 +27,7 @@ public class RequestSender {
         gson = new Gson();
     }
 
-    public String sendRequest(ActionsSequence sequence, String url) throws IOException {
+    public void sendRequest(ActionsSequence sequence, String url) throws Exception {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, gson.toJson(sequence));
 
@@ -36,8 +36,10 @@ public class RequestSender {
                 .post(body)
                 .build();
 
-        Response response = client.newCall(request).execute();
-        return response.body().string();
+        if(client.newCall(request).execute().code()==200){
+            throw new Exception("error while sending request: wrong response code");
+        }
+        //return response.body().string();
     }
 }
 

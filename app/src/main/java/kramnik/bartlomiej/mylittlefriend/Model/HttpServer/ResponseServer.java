@@ -30,7 +30,7 @@ public class ResponseServer extends NanoHTTPD {
 
     @Override
     public Response serve(IHTTPSession session) {
-        Log.d("HTTP Server","request reciwed");
+        Log.d("HTTP Server","request recived");
 
         try{
             Integer contentLength = Integer.parseInt(session.getHeaders().get("content-length"));
