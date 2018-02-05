@@ -1,6 +1,7 @@
 package kramnik.bartlomiej.mylittlefriend.Root.Dagger;
 
 import dagger.Component;
+import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
 import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
 
@@ -14,4 +15,6 @@ public interface AppComponent {
     public void inject(SelectAgentView view);
 
     public void inject(SendCommandsView view);
+
+    public void inject(ResponseServer server);
 }

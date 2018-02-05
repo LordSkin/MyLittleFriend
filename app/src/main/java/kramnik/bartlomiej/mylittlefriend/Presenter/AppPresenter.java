@@ -2,13 +2,14 @@ package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
+import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
 
 /**
  * Created by Mao on 04.02.2018.
  */
 
-public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter {
+public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener {
 
 
 
@@ -52,6 +53,12 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter 
 
     @Override
     public void sendCommand() {
+
+    }
+
+    //responses from http server
+    @Override
+    public void requestIncome(Object o) {
 
     }
 }

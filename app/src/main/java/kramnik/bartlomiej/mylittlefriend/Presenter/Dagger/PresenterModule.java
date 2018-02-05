@@ -18,12 +18,10 @@ import okhttp3.Response;
 @Module
 public class PresenterModule {
     private App app;
-    private ResponseServer responseServer;
     private RequestSender sender;
 
     public PresenterModule(App app) {
         this.app = app;
-        responseServer = new ResponseServer();
         sender = new RequestSender();
     }
 
@@ -33,11 +31,6 @@ public class PresenterModule {
         return app;
     }
 
-    @Provides
-    @Singleton
-    public ResponseServer provideServer(){
-        return responseServer;
-    }
 
     @Provides
     @Singleton

@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.inject.Inject;
+
 import fi.iki.elonen.NanoHTTPD;
 
 /**
@@ -17,6 +19,8 @@ import fi.iki.elonen.NanoHTTPD;
 
 public class ResponseServer extends NanoHTTPD {
 
+    @Inject
+    ResponseListener listener;
 
     public ResponseServer() {
         super(8080);
@@ -37,7 +41,7 @@ public class ResponseServer extends NanoHTTPD {
             byte[] buffer = new byte[contentLength];
             session.getInputStream().read(buffer, 0, contentLength);
             String x =new String(buffer);
-
+            listener.requestIncome(x);
 
 
         }

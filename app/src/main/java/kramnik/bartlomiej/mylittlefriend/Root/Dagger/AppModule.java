@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
+import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Presenter.AppPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SelectAgentPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SendCommandPresenter;
@@ -22,15 +23,18 @@ public class AppModule {
         this.presenter = presenter;
     }
 
-    @Singleton
     @Provides
     public SelectAgentPresenter provideSelectAgentPresenter(){
         return  presenter;
     }
 
-    @Singleton
     @Provides
     public SendCommandPresenter provideSendCommandPresenter(){
+        return  presenter;
+    }
+
+    @Provides
+    public ResponseListener provideResponseListener(){
         return  presenter;
     }
 }
