@@ -1,6 +1,7 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
+import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
 
 /**
  * Created by Mao on 04.02.2018.
@@ -14,5 +15,7 @@ public interface SendCommandPresenter {
     void clearActions();
 
     void sendCommand();
+
+    void setSendCommandView(SendCommandsView view);
 
 }

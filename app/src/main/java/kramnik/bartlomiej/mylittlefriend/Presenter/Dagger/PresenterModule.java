@@ -26,14 +26,12 @@ public class PresenterModule {
     }
 
     @Provides
-    @Singleton
     public Context provideContext(){
         return app;
     }
 
 
     @Provides
-    @Singleton
     public RequestSender provideSender(){
         return sender;
     }

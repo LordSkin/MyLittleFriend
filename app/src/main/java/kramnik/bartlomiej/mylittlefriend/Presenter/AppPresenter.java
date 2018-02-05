@@ -1,9 +1,16 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import javax.inject.Inject;
+
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
+import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
+import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
 
 /**
  * Created by Mao on 04.02.2018.
@@ -11,10 +18,18 @@ import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
 
 public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener {
 
+    @Inject
+    RequestSender sender;
+
+    @Inject
+    Context context;
+
+    private SelectAgentView selectAgentView;
+    private SendCommandsView sendCommandsView;
+
 
 
     public AppPresenter() {
-        RequestSender sender = new RequestSender();
 
     }
 
@@ -32,6 +47,11 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     @Override
     public void SelectAgent(int pos) {
 
+    }
+
+    @Override
+    public void setSelectAgentView(SelectAgentView view) {
+        this.selectAgentView = view;
     }
 
 
@@ -56,9 +76,14 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
 
     }
 
+    @Override
+    public void setSendCommandView(SendCommandsView view) {
+        this.sendCommandsView = view;
+    }
+
     //responses from http server
     @Override
     public void requestIncome(Object o) {
-
+        Toast.makeText(context, o.toString(), Toast.LENGTH_SHORT).show();
     }
 }
