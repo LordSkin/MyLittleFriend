@@ -59,7 +59,12 @@ public class App extends Application {
                 List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
                 for (InetAddress addr : addrs) {
                     if (!addr.isLoopbackAddress()) {
-                        myIP = addr.getHostAddress();
+                        String sAddr = addr.getHostAddress();
+                        boolean isIPv4 = sAddr.indexOf(':')<0;
+                        if(isIPv4){
+                            myIP = sAddr;
+                        }
+
                     }
                 }
             }

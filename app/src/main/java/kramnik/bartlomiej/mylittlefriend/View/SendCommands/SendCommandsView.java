@@ -5,4 +5,5 @@ package kramnik.bartlomiej.mylittlefriend.View.SendCommands;
  */
 
 public interface SendCommandsView {
+    void showMessage(String s);
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
+import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
@@ -27,10 +28,14 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     private SelectAgentView selectAgentView;
     private SendCommandsView sendCommandsView;
 
+    private Agent selectedAgent;
+    private ActionsSequence sequence;
+
 
 
     public AppPresenter() {
-
+        selectedAgent = new Agent("ip", "name");
+        sequence = new ActionsSequence();
     }
 
     //from sleectAgent activity
@@ -58,22 +63,31 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     //from send command activity
     @Override
     public void addAction(Action action) {
-
+        sequence.addAction(action);
     }
 
     @Override
     public void removeAction(int pos) {
-
+        sequence.deleteAction(pos);
     }
 
     @Override
     public void clearActions() {
-
+        sequence.clearActions();
     }
 
     @Override
     public void sendCommand() {
-
+        try {
+            sender.sendRequest(sequence, selectedAgent.getIp());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            sendCommandsView.showMessage(e.toString());
+        }
+        finally {
+            sequence.clearActions();
+        }
     }
 
     @Override
@@ -84,6 +98,6 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     //responses from http server
     @Override
     public void requestIncome(Object o) {
-        Toast.makeText(context, o.toString(), Toast.LENGTH_SHORT).show();
+        selectAgentView.showMessage((String)o);
     }
 }
