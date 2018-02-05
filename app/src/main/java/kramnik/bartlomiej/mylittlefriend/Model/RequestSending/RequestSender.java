@@ -1,5 +1,6 @@
 package kramnik.bartlomiej.mylittlefriend.Model.RequestSending;
 
+import android.accounts.NetworkErrorException;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -29,11 +30,9 @@ public class RequestSender {
         gson = new Gson();
     }
 
-    public void sendRequest(ActionsSequence sequence, String url) throws Exception {
+    public void sendRequest(ActionsSequence sequence, String url) throws IOException, NetworkErrorException {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, gson.toJson(sequence));
-        String x = gson.toJson(sequence);
-        Log.d("aaa", x);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -41,7 +40,7 @@ public class RequestSender {
                 .build();
 
         if(client.newCall(request).execute().code()!=200){
-            throw new Exception("error while sending request: wrong response code");
+            throw new NetworkErrorException("error while sending request: wrong response code");
         }
         //return response.body().string();
     }
