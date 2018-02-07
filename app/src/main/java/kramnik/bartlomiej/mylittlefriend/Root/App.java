@@ -39,13 +39,10 @@ public class App extends Application {
         super.onCreate();
 
         getIP();
-
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(presenter)).build();
         PresenterComponent presenterComponent =  DaggerPresenterComponent.builder().presenterModule(new PresenterModule(this)).build();
         presenter = new AppPresenter();
         presenterComponent.inject(presenter);
-
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule(presenter)).build();
-
         ResponseServer server = new ResponseServer();
 
         appComponent.inject(server);
@@ -69,7 +66,8 @@ public class App extends Application {
                 }
             }
         }
-        catch (Exception ex) {
+        catch (Exception e) {
+            e.printStackTrace();
             myIP ="";
         }
     }

@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
@@ -20,7 +22,7 @@ import okhttp3.Response;
  * Sending http requests to robot with specified commands
  */
 
-public class RequestSender {
+public class RequestSender extends Observable<String> {
 
     private final MediaType JSON;
     private Gson gson;
@@ -29,6 +31,13 @@ public class RequestSender {
         JSON = MediaType.parse("application/json; charset=utf-8");
         gson = new Gson();
     }
+
+    @Override
+    protected void subscribeActual(Observer<? super String> observer) {
+
+    }
+
+
 
     public void sendRequest(ActionsSequence sequence, String url) throws IOException, NetworkErrorException {
         OkHttpClient client = new OkHttpClient();

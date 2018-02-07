@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsDataBase;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
@@ -24,6 +25,9 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
 
     @Inject
     Context context;
+
+    @Inject
+    AgentsDataBase dataBase;
 
     private SelectAgentView selectAgentView;
     private SendCommandsView sendCommandsView;

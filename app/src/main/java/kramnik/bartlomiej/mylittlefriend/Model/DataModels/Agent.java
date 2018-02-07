@@ -1,11 +1,23 @@
 package kramnik.bartlomiej.mylittlefriend.Model.DataModels;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 /**
- * Created by Mao on 04.02.2018.
+ * Datamodel for agent, used in database
  */
 
+@Entity
 public class Agent {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "ip")
     private String ip;
+
+    @ColumnInfo(name = "name")
     private String name;
 
     public Agent(String ip, String name) {
@@ -27,5 +39,13 @@ public class Agent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
