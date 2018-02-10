@@ -6,10 +6,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
+import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -22,24 +24,20 @@ import okhttp3.Response;
  * Sending http requests to robot with specified commands
  */
 
-public class RequestSender extends Observable<String> {
+public class RequestSender implements AgentConnector {
 
     private final MediaType JSON;
     private Gson gson;
+    public static int port = 8080;
 
     public RequestSender() {
         JSON = MediaType.parse("application/json; charset=utf-8");
         gson = new Gson();
     }
 
-    @Override
-    protected void subscribeActual(Observer<? super String> observer) {
+    
 
-    }
-
-
-
-    public void sendRequest(ActionsSequence sequence, String url) throws IOException, NetworkErrorException {
+    private void sendRequest(ActionsSequence sequence, String url) throws IOException, NetworkErrorException {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, gson.toJson(sequence));
 
@@ -52,6 +50,39 @@ public class RequestSender extends Observable<String> {
             throw new NetworkErrorException("error while sending request: wrong response code");
         }
         //return response.body().string();
+    }
+
+    @Override
+    public void sendCommands(ActionsSequence sequence, String ip) throws IOException, NetworkErrorException {
+        sendRequest(sequence, ip+":"+port);
+    }
+
+    @Override
+    public int checkStatus(String ip) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(ip+":"+port)
+                .get()
+                .build();
+        String s = null;
+        try {
+            s = client.newCall(request).execute().body().string();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return Agent.UNREACHABLE;
+        }
+
+        if(s.equals("idle")){
+            return  Agent.READY;
+        }
+        if(s.equals("working")){
+            return Agent.WORKING;
+        }
+        else return Agent.UNREACHABLE;
     }
 }
 

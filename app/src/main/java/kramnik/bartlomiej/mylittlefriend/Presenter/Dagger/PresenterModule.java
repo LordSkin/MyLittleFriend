@@ -9,7 +9,9 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsDataBase;
+import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsList;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
+import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.AgentConnector;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
 import kramnik.bartlomiej.mylittlefriend.Root.App;
 import okhttp3.Response;
@@ -21,8 +23,8 @@ import okhttp3.Response;
 @Module
 public class PresenterModule {
     private App app;
-    private RequestSender sender;
-    private AgentsDataBase dataBase;
+    private AgentConnector sender;
+    private AgentsList agentsList;
 
     public PresenterModule(final App app) {
         this.app = app;
@@ -30,7 +32,7 @@ public class PresenterModule {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                dataBase = Room.databaseBuilder(app, AgentsDataBase.class, "bazaDanych1").build();
+                agentsList = new AgentsList(app);
                 return null;
             }
         }.execute();
@@ -43,12 +45,12 @@ public class PresenterModule {
 
 
     @Provides
-    public RequestSender provideSender(){
+    public AgentConnector provideSender(){
         return sender;
     }
 
     @Provides
-    public AgentsDataBase provideDataBase(){
-        return dataBase;
+    public AgentsList provideAgentsList(){
+        return agentsList;
     }
 }

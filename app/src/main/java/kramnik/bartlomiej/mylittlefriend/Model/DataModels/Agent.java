@@ -11,6 +11,10 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class Agent {
 
+    public static final int WORKING = 0;
+    public static final int READY = -1;
+    public static final int UNREACHABLE = 1;
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -20,9 +24,12 @@ public class Agent {
     @ColumnInfo(name = "name")
     private String name;
 
+    private int status;
+
     public Agent(String ip, String name) {
         this.ip = ip;
         this.name = name;
+        status = UNREACHABLE;
     }
 
     public String getIp() {
@@ -47,5 +54,13 @@ public class Agent {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

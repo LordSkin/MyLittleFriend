@@ -48,6 +48,6 @@ public class ResponseServer extends NanoHTTPD {
         catch (Exception e){
             e.printStackTrace();
         }
-        return NanoHTTPD.newFixedLengthResponse("dupa");
+        return NanoHTTPD.newFixedLengthResponse("OK");
     }
 }

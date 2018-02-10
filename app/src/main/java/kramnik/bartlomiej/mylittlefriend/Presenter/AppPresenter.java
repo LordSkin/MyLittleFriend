@@ -6,10 +6,12 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsDataBase;
+import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsList;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
+import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.AgentConnector;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
 import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
@@ -21,13 +23,13 @@ import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
 public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener {
 
     @Inject
-    RequestSender sender;
+    AgentConnector sender;
 
     @Inject
     Context context;
 
     @Inject
-    AgentsDataBase dataBase;
+    AgentsList agentsList;
 
     private SelectAgentView selectAgentView;
     private SendCommandsView sendCommandsView;
@@ -83,7 +85,8 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     @Override
     public void sendCommand() {
         try {
-            sender.sendRequest(sequence, selectedAgent.getIp());
+            sender.sendCommands(sequence, selectedAgent.getIp());
+
         }
         catch (Exception e) {
             e.printStackTrace();
