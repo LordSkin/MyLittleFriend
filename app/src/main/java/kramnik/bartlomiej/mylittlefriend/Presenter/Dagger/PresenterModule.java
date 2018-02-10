@@ -3,6 +3,7 @@ package kramnik.bartlomiej.mylittlefriend.Presenter.Dagger;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 
 import javax.inject.Singleton;
 
@@ -29,13 +30,7 @@ public class PresenterModule {
     public PresenterModule(final App app) {
         this.app = app;
         sender = new RequestSender();
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                agentsList = new AgentsList(app);
-                return null;
-            }
-        }.execute();
+        agentsList = new AgentsList(app);
     }
 
     @Provides

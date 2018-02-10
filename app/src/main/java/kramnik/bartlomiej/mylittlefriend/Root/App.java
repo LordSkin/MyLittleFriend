@@ -7,6 +7,11 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
 import kramnik.bartlomiej.mylittlefriend.Presenter.AppPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.Dagger.DaggerPresenterComponent;
@@ -39,12 +44,43 @@ public class App extends Application {
         super.onCreate();
 
         getIP();
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule(presenter)).build();
-        PresenterComponent presenterComponent =  DaggerPresenterComponent.builder().presenterModule(new PresenterModule(this)).build();
-        presenter = new AppPresenter();
-        presenterComponent.inject(presenter);
-        ResponseServer server = new ResponseServer();
+        final PresenterComponent[] presenterComponent = new PresenterComponent[1];
+        final App app = this;
+        Observable<PresenterComponent> observable = new Observable<PresenterComponent>() {
 
+
+            @Override
+            protected void subscribeActual(Observer<? super PresenterComponent> observer) {
+                observer.onNext(DaggerPresenterComponent.builder().presenterModule(new PresenterModule(app)).build());
+            }
+        };
+        observable.subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<PresenterComponent>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(PresenterComponent value) {
+                        value.inject(presenter);
+                    }
+
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        presenter = new AppPresenter();
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(presenter)).build();
+        ResponseServer server = new ResponseServer();
         appComponent.inject(server);
 
     }

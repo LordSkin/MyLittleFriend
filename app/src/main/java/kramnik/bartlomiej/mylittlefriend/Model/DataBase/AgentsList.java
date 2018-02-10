@@ -17,7 +17,7 @@ public class AgentsList {
     private List<Agent> agents;
 
     public AgentsList(Context context) {
-        dataBase = Room.databaseBuilder(context, AgentsDataBase.class, "myLittleFriendDatabase").build();
+        dataBase = Room.databaseBuilder(context, AgentsDataBase.class, "myLittleFriendDatabase2").build();
         agents = dataBase.agentDao().getAll();
     }
 
