@@ -9,7 +9,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
@@ -44,11 +43,8 @@ public class App extends Application {
         super.onCreate();
 
         getIP();
-        final PresenterComponent[] presenterComponent = new PresenterComponent[1];
         final App app = this;
         Observable<PresenterComponent> observable = new Observable<PresenterComponent>() {
-
-
             @Override
             protected void subscribeActual(Observer<? super PresenterComponent> observer) {
                 observer.onNext(DaggerPresenterComponent.builder().presenterModule(new PresenterModule(app)).build());
@@ -57,25 +53,15 @@ public class App extends Application {
         observable.subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<PresenterComponent>() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
+                    public void onSubscribe(Disposable d) {}
                     @Override
                     public void onNext(PresenterComponent value) {
                         value.inject(presenter);
                     }
-
-
                     @Override
-                    public void onError(Throwable e) {
-
-                    }
-
+                    public void onError(Throwable e) {}
                     @Override
-                    public void onComplete() {
-
-                    }
+                    public void onComplete() {}
                 });
 
         presenter = new AppPresenter();
@@ -97,7 +83,6 @@ public class App extends Application {
                         if(isIPv4){
                             myIP = sAddr;
                         }
-
                     }
                 }
             }

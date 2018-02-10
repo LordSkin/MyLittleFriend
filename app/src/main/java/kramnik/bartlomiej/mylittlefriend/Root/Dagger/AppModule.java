@@ -9,6 +9,8 @@ import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Presenter.AppPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SelectAgentPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SendCommandPresenter;
+import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgent;
+import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsAdapter;
 
 /**
  * Created by Mao on 04.02.2018.
@@ -36,5 +38,15 @@ public class AppModule {
     @Provides
     public ResponseListener provideResponseListener(){
         return  presenter;
+    }
+
+    @Provides
+    public AgentsAdapter provideAgentsAdapter(){
+        return presenter;
+    }
+
+    @Provides
+    public AddAgent provideAddAgent(){
+        return presenter;
     }
 }

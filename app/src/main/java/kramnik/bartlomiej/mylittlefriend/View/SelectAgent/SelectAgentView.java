@@ -6,4 +6,5 @@ package kramnik.bartlomiej.mylittlefriend.View.SelectAgent;
 
 public interface SelectAgentView {
     void showMessage(String s);
+    void refreshList();
 }
