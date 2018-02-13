@@ -2,26 +2,22 @@ package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;
-import android.widget.Toast;
 
 import java.io.IOException;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsDataBase;
 import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsList;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.AgentConnector;
-import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
+import kramnik.bartlomiej.mylittlefriend.Model.Services.ServiceDataProvider;
 import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgent;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsAdapter;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
@@ -31,7 +27,7 @@ import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
  * Created by Mao on 04.02.2018.
  */
 
-public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener, AgentsAdapter, AddAgent {
+public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener, AgentsAdapter, AddAgent, ServiceDataProvider {
 
     @Inject
     AgentConnector sender;
@@ -138,6 +134,7 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
             }
         });
 
+
     }
 
     //from sleectAgent activity
@@ -215,5 +212,17 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
         addAgent(new Agent(ipAddr, name));
         selectAgentView.refreshList();
 
+    }
+
+
+    @Override
+    public AgentsList getAgentsList() {
+        return agentsList;
+    }
+
+
+    @Override
+    public SelectAgentView getSelectAgentView() {
+        return selectAgentView;
     }
 }

@@ -2,6 +2,7 @@ package kramnik.bartlomiej.mylittlefriend.Root.Dagger;
 
 import dagger.Component;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
+import kramnik.bartlomiej.mylittlefriend.Model.Services.CheckingAgentsService;
 import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgentDialog;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsListAdapter;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentActivity;
@@ -25,4 +26,6 @@ public interface AppComponent {
     public void inject(AgentsListAdapter adapter);
 
     public void inject(AddAgentDialog addAgentDialog);
+
+    public void inject(CheckingAgentsService service);
 }

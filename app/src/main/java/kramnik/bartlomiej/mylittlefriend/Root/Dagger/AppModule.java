@@ -1,11 +1,9 @@
 package kramnik.bartlomiej.mylittlefriend.Root.Dagger;
 
-import javax.inject.Singleton;
-
-import dagger.Component;
 import dagger.Module;
 import dagger.Provides;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
+import kramnik.bartlomiej.mylittlefriend.Model.Services.ServiceDataProvider;
 import kramnik.bartlomiej.mylittlefriend.Presenter.AppPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SelectAgentPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SendCommandPresenter;
@@ -48,5 +46,10 @@ public class AppModule {
     @Provides
     public AddAgent provideAddAgent(){
         return presenter;
+    }
+
+    @Provides
+    public ServiceDataProvider provideServiceInject(){
+        return  presenter;
     }
 }

@@ -1,6 +1,7 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
+import kramnik.bartlomiej.mylittlefriend.Model.Services.CheckingAgentsService;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
 
 /**

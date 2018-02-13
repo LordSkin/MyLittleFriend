@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import kramnik.bartlomiej.mylittlefriend.Model.Services.CheckingAgentsService;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SelectAgentPresenter;
 import kramnik.bartlomiej.mylittlefriend.R;
 import kramnik.bartlomiej.mylittlefriend.Root.App;
@@ -25,6 +26,7 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
     SelectAgentPresenter presenter;
 
     private ListView listView;
+    private AgentsListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,12 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
 
         listView = (ListView)findViewById(R.id.listView);
 
-        AgentsListAdapter adapter = new AgentsListAdapter();
+        adapter = new AgentsListAdapter();
         ((App)getApplication()).getAppComponent().inject(adapter);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
+
+        startService(new Intent(this, CheckingAgentsService.class));
 
     }
 
@@ -78,7 +82,7 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                listView.deferNotifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         });
     }

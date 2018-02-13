@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:name=".Root.App"
         android:theme="@style/AppTheme">
+        
+        <service android:name=".Model.Services.CheckingAgentsService"/>
+        
         <activity android:name=".View.SelectAgent.SelectAgentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
