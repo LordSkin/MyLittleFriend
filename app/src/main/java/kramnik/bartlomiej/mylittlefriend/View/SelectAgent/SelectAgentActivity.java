@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgentDialog;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsListAdapter;
 import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsActivity;
 
-public class SelectAgentActivity extends AppCompatActivity implements View.OnClickListener, SelectAgentView {
+public class SelectAgentActivity extends AppCompatActivity implements View.OnClickListener, SelectAgentView, AdapterView.OnItemClickListener {
 
     @Inject
     SelectAgentPresenter presenter;
@@ -39,6 +40,7 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
         AgentsListAdapter adapter = new AgentsListAdapter();
         ((App)getApplication()).getAppComponent().inject(adapter);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
 
     }
 
@@ -73,6 +75,18 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void refreshList() {
-        listView.deferNotifyDataSetChanged();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listView.deferNotifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        presenter.SelectAgent(i);
+        Intent intent = new Intent(this, SendCommandsActivity.class);
+        startActivity(intent);
     }
 }

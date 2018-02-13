@@ -1,7 +1,10 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -10,6 +13,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsDataBase;
 import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsList;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
@@ -45,26 +49,111 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     private ActionsSequence sequence;
 
 
+    private PublishSubject<Agent> addToDbObservable;
+    private PublishSubject<Integer> removeFromDbObservable;
+    private PublishSubject<Void> sendRequestObservable;
+
 
     public AppPresenter() {
         selectedAgent = new Agent("ip", "name");
         sequence = new ActionsSequence();
+
+        addToDbObservable = PublishSubject.create();
+        addToDbObservable.observeOn(Schedulers.newThread()).subscribe(new Observer<Agent>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Agent value) {
+                agentsList.addAgent(value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        removeFromDbObservable = PublishSubject.create();
+        removeFromDbObservable.observeOn(Schedulers.newThread()).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer value) {
+                agentsList.deleteAgent(value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
+        sendRequestObservable = PublishSubject.create();
+        sendRequestObservable.observeOn(Schedulers.newThread()).subscribe(new Observer<Void>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Void value) {
+                try {
+                    sender.sendCommands(sequence, selectedAgent.getIp());
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+                catch (NetworkErrorException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    sequence.clearActions();
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+
     }
 
     //from sleectAgent activity
     @Override
     public void addAgent(Agent agent) {
-
+        addToDbObservable.onNext(agent);
     }
 
     @Override
     public void removeAgent(int pos) {
-
+        removeFromDbObservable.onNext(pos);
     }
 
     @Override
     public void SelectAgent(int pos) {
-
+        selectedAgent = agentsList.getAgent(pos);
     }
 
     @Override
@@ -91,17 +180,7 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
 
     @Override
     public void sendCommand() {
-        try {
-            sender.sendCommands(sequence, selectedAgent.getIp());
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            sendCommandsView.showMessage(e.toString());
-        }
-        finally {
-            sequence.clearActions();
-        }
+        sendRequestObservable.onNext(null);
     }
 
     @Override
@@ -112,7 +191,7 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     //responses from http server
     @Override
     public void requestIncome(Object o) {
-        selectAgentView.showMessage((String)o);
+        selectAgentView.showMessage((String) o);
     }
 
     //from Agentadapter - for listView
@@ -132,38 +211,9 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     }
 
     @Override
-    public void addAgent(final String name, final String ipAddr) {
-
-        Observable observable = new Observable() {
-            @Override
-            protected void subscribeActual(Observer observer) {
-                agentsList.addAgent(new Agent(ipAddr, name));
-                observer.onNext(new Object());
-            }
-        };
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(Object value) {
-                        selectAgentView.refreshList();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+    public void addAgent(String name, String ipAddr) {
+        addAgent(new Agent(ipAddr, name));
+        selectAgentView.refreshList();
 
     }
 }
