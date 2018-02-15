@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import javax.inject.Inject;
 
 import fi.iki.elonen.NanoHTTPD;
+import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Observation;
 
 /**
  * Created by Mao on 30.01.2018.
@@ -41,7 +42,8 @@ public class ResponseServer extends NanoHTTPD {
             byte[] buffer = new byte[contentLength];
             session.getInputStream().read(buffer, 0, contentLength);
             String x =new String(buffer);
-            listener.requestIncome(x);
+            // TODO: 15.02.2018 convert x to Observation 
+            listener.requestIncome(new Observation(), "192.168.0.1");
 
 
         }

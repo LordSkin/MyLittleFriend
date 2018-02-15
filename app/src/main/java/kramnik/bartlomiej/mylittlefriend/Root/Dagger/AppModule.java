@@ -7,6 +7,7 @@ import kramnik.bartlomiej.mylittlefriend.Model.Services.ServiceDataProvider;
 import kramnik.bartlomiej.mylittlefriend.Presenter.AppPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SelectAgentPresenter;
 import kramnik.bartlomiej.mylittlefriend.Presenter.SendCommandPresenter;
+import kramnik.bartlomiej.mylittlefriend.Presenter.ShowObservationsPresenter;
 import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgent;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsAdapter;
 
@@ -50,6 +51,11 @@ public class AppModule {
 
     @Provides
     public ServiceDataProvider provideServiceInject(){
+        return  presenter;
+    }
+
+    @Provides
+    public ShowObservationsPresenter provideShowObservations(){
         return  presenter;
     }
 }

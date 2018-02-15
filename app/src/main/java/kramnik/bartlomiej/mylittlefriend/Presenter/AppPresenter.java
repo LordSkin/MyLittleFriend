@@ -1,7 +1,11 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import android.accounts.NetworkErrorException;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 
 import java.io.IOException;
 
@@ -15,19 +19,23 @@ import kramnik.bartlomiej.mylittlefriend.Model.DataBase.AgentsList;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Action;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
+import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Observation;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
+import kramnik.bartlomiej.mylittlefriend.Model.NotificationsMenager;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.AgentConnector;
 import kramnik.bartlomiej.mylittlefriend.Model.Services.ServiceDataProvider;
+import kramnik.bartlomiej.mylittlefriend.R;
 import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgent;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsAdapter;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
 import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
+import kramnik.bartlomiej.mylittlefriend.View.ViewObservations.ShowObservationsActivity;
 
 /**
  * Created by Mao on 04.02.2018.
  */
 
-public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener, AgentsAdapter, AddAgent, ServiceDataProvider {
+public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter, ResponseListener, AgentsAdapter, AddAgent, ServiceDataProvider, ShowObservationsPresenter {
 
     @Inject
     AgentConnector sender;
@@ -187,8 +195,12 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
 
     //responses from http server
     @Override
-    public void requestIncome(Object o) {
-        selectAgentView.showMessage((String) o);
+    public void requestIncome(Observation o, String agentIP) {
+        Agent sender = null;
+        for (Agent a : agentsList.getAgents()) {
+            if (a.getIp().equals(agentIP)) sender = a;
+        }
+        if (sender != null) NotificationsMenager.notificationsMenager(context, o, sender);
     }
 
     //from Agentadapter - for listView
@@ -211,7 +223,6 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     public void addAgent(String name, String ipAddr) {
         addAgent(new Agent(ipAddr, name));
         selectAgentView.refreshList();
-
     }
 
 
@@ -224,5 +235,12 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
     @Override
     public SelectAgentView getSelectAgentView() {
         return selectAgentView;
+    }
+
+
+    //from ShowObservations
+    @Override
+    public Object getObservations() {
+        return null;
     }
 }

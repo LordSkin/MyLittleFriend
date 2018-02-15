@@ -25,6 +25,7 @@ public class CheckingAgentsService extends IntentService {
     ServiceDataProvider presenter;
 
     private AgentConnector agentConnector;
+    private final int delaylengt = 5000;//in miliseconds
 
 
     public CheckingAgentsService() {
@@ -54,7 +55,7 @@ public class CheckingAgentsService extends IntentService {
                 }
                 presenter.getSelectAgentView().refreshList();
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(delaylengt);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
