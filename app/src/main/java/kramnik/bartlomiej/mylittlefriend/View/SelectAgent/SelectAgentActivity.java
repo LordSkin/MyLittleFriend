@@ -55,6 +55,12 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, CheckingAgentsService.class));
+    }
+
+    @Override
     public void onClick(View view) {
         if(view.getId()==R.id.Button1){
             Intent intent = new Intent(this, SendCommandsActivity.class);

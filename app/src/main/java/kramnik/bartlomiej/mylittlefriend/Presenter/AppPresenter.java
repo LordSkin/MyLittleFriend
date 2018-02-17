@@ -1,11 +1,7 @@
 package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import android.accounts.NetworkErrorException;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
 
 import java.io.IOException;
 
@@ -21,15 +17,13 @@ import kramnik.bartlomiej.mylittlefriend.Model.DataModels.ActionsSequence;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Observation;
 import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseListener;
-import kramnik.bartlomiej.mylittlefriend.Model.NotificationsMenager;
+import kramnik.bartlomiej.mylittlefriend.Model.Notifications.NotificationsMenager;
 import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.AgentConnector;
 import kramnik.bartlomiej.mylittlefriend.Model.Services.ServiceDataProvider;
-import kramnik.bartlomiej.mylittlefriend.R;
 import kramnik.bartlomiej.mylittlefriend.View.Dialogs.AddAgent;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.ListAdapter.AgentsAdapter;
 import kramnik.bartlomiej.mylittlefriend.View.SelectAgent.SelectAgentView;
 import kramnik.bartlomiej.mylittlefriend.View.SendCommands.SendCommandsView;
-import kramnik.bartlomiej.mylittlefriend.View.ViewObservations.ShowObservationsActivity;
 
 /**
  * Created by Mao on 04.02.2018.
@@ -45,6 +39,9 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
 
     @Inject
     AgentsList agentsList;
+
+    @Inject
+    NotificationsMenager notifications;
 
     private SelectAgentView selectAgentView;
     private SendCommandsView sendCommandsView;
@@ -200,7 +197,7 @@ public class AppPresenter implements SelectAgentPresenter, SendCommandPresenter,
         for (Agent a : agentsList.getAgents()) {
             if (a.getIp().equals(agentIP)) sender = a;
         }
-        if (sender != null) NotificationsMenager.notificationsMenager(context, o, sender);
+        if (sender != null) notifications.postNewObservation(context, o, sender);
     }
 
     //from Agentadapter - for listView

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -46,25 +47,33 @@ public class RequestSender implements AgentConnector {
                 .post(body)
                 .build();
 
-        if(client.newCall(request).execute().code()!=200){
-            throw new NetworkErrorException("error while sending request: wrong response code");
+        try{
+            if(client.newCall(request).execute().code()!=200){
+                throw new NetworkErrorException("error while sending request: wrong response code");
+            }
         }
+        catch (SocketTimeoutException e){
+            throw new NetworkErrorException("error while sending request: timeout");
+        }
+
         //return response.body().string();
     }
 
     @Override
     public void sendCommands(ActionsSequence sequence, String ip) throws IOException, NetworkErrorException {
-        sendRequest(sequence, ip+":"+port);
+        if(sequence==null||ip==null) throw  new NullPointerException();
+        sendRequest(sequence, "http:\\\\"+ip+":"+port);
     }
 
     @Override
     public int checkStatus(String ip) {
+        if (ip==null) throw new NullPointerException();
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
                 .build();
 
         Request request = new Request.Builder()
-                .url(ip+":"+port)
+                .url("http:\\\\"+ip+":"+port)
                 .get()
                 .build();
         String s = null;

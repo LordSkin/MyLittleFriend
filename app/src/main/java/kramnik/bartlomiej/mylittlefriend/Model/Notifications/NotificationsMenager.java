@@ -1,6 +1,5 @@
-package kramnik.bartlomiej.mylittlefriend.Model;
+package kramnik.bartlomiej.mylittlefriend.Model.Notifications;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,9 +21,11 @@ import kramnik.bartlomiej.mylittlefriend.View.ViewObservations.ShowObservationsA
 public class NotificationsMenager {
 
 
-    private static NotificationManager getMenager(Context context) {
+    NotificationManager notificationManager;
 
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    public NotificationsMenager(Context context) {
+
+         notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("id", "name", importance);
@@ -35,19 +36,17 @@ public class NotificationsMenager {
             channel.enableVibration(true);
             channel.setVibrationPattern(new long[]{100, 50});
             notificationManager.createNotificationChannel(channel);
-            return notificationManager;
         }
-        return  notificationManager;
     }
 
     /**
      * push notification about new Observation from Agent
+     *
      * @param context
      * @param observation that is shown
-     * @param agent agent which send observation
+     * @param agent       agent which send observation
      */
-    public static void notificationsMenager(Context context, Observation observation, Agent agent) {
-        NotificationManager mNotificationManager = getMenager(context);
+    public void postNewObservation(Context context, Observation observation, Agent agent) {
         Intent resultIntent = new Intent(context, ShowObservationsActivity.class);
         resultIntent.putExtra("observation", observation);
 
@@ -55,7 +54,7 @@ public class NotificationsMenager {
                 new NotificationCompat.Builder(context, "id")
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setContentTitle("New observation!")
-                        .setContentText(agent.getName() +" send new Observation!");
+                        .setContentText(agent.getName() + " send new Observation!");
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(resultIntent);
@@ -63,6 +62,6 @@ public class NotificationsMenager {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
-        mNotificationManager.notify(1, mBuilder.build());
+        notificationManager.notify(1, mBuilder.build());
     }
 }
