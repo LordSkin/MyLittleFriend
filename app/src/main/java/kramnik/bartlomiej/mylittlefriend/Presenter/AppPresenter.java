@@ -2,6 +2,7 @@ package kramnik.bartlomiej.mylittlefriend.Presenter;
 
 import android.accounts.NetworkErrorException;
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.IOException;
 

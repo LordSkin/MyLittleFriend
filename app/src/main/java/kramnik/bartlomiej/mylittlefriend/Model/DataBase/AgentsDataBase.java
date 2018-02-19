@@ -6,7 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Agent;
 
 /**
- * DataBase class required by googlr room
+ * DataBase class required by room
  */
 
 @Database(entities = {Agent.class}, version = 2)

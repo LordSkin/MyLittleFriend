@@ -1,7 +1,6 @@
-package RequestSender;
+package kramnik.bartlomiej.mylittlefriend.RequestSender;
 
 import android.accounts.NetworkErrorException;
-import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,7 +19,6 @@ import kramnik.bartlomiej.mylittlefriend.Model.RequestSending.RequestSender;
 /**
  * Tests of request sender
  */
-@RunWith(AndroidJUnit4.class)
 public class RequestenderTests {
 
     private RequestSender testObject;
@@ -107,16 +105,29 @@ public class RequestenderTests {
     }
 
     @Test
-    public void sendingCommandsTest1(){
+    public void sendingCommandsTestPositive(){
         try {
-            testObject.sendCommands(new ActionsSequence(), "192.168.0.1");
+            testObject.sendCommands(new ActionsSequence(), "portquiz.net");
+        }
+        catch (Exception e){
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void sendingCommandsTestNegative(){
+        try {
+            testObject.sendCommands(new ActionsSequence(), "192.168.0.55");
             Assert.fail();
         }
         catch (IOException e) {
             Assert.fail();
         }
         catch (NetworkErrorException e) {
-            Assert.assertTrue(e.getMessage().equals("error while sending request: timeout"));
+           //OK
+        }
+        catch (Exception e){
+            Assert.fail();
         }
     }
 

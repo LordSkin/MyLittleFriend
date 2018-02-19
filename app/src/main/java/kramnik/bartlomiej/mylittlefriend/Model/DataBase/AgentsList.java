@@ -21,6 +21,11 @@ public class AgentsList {
         agents = dataBase.agentDao().getAll();
     }
 
+    public AgentsList(AgentsDataBase dataBase){
+        this.dataBase = dataBase;
+        agents = dataBase.agentDao().getAll();
+    }
+
     public List<Agent> getAgents(){
         return agents;
     }
@@ -30,11 +35,19 @@ public class AgentsList {
     }
 
     public void deleteAgent(int pos){
+        Agent a = agents.get(pos);
         agents.remove(pos);
-        dataBase.agentDao().deleteAgent(agents.get(pos));
+        dataBase.agentDao().deleteAgent(a);
+    }
+
+    public void deleteAgent(Agent agent){
+        if(!agents.contains(agent)) throw new ArrayIndexOutOfBoundsException();
+        agents.remove(agent);
+        dataBase.agentDao().deleteAgent(agent);
     }
 
     public void addAgent(Agent agent){
+        if(agent==null) throw new NullPointerException();
         agents.add(agent);
         dataBase.agentDao().addAgent(agent);
     }

@@ -15,7 +15,7 @@ import fi.iki.elonen.NanoHTTPD;
 import kramnik.bartlomiej.mylittlefriend.Model.DataModels.Observation;
 
 /**
- * Created by Mao on 30.01.2018.
+ * Http server handling incoming request and using ResponseListener
  */
 
 public class ResponseServer extends NanoHTTPD {
@@ -23,6 +23,17 @@ public class ResponseServer extends NanoHTTPD {
     @Inject
     ResponseListener listener;
 
+    /**
+     * set listener
+     * @param listener
+     */
+    public void setListener(ResponseListener listener) {
+        this.listener = listener;
+    }
+
+    /**
+     * create and start server
+     */
     public ResponseServer() {
         super(8080);
         try {
@@ -31,6 +42,13 @@ public class ResponseServer extends NanoHTTPD {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * stop server
+     */
+    public void stopServer(){
+        stop();
     }
 
     @Override
@@ -43,7 +61,7 @@ public class ResponseServer extends NanoHTTPD {
             session.getInputStream().read(buffer, 0, contentLength);
             String x =new String(buffer);
             // TODO: 15.02.2018 convert x to Observation 
-            listener.requestIncome(new Observation(), "192.168.0.1");
+            if(listener!=null)listener.requestIncome(new Observation(), "192.168.0.1");
 
 
         }
