@@ -2,6 +2,8 @@ package kramnik.bartlomiej.mylittlefriend.HttpServer;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,7 +31,7 @@ import kramnik.bartlomiej.mylittlefriend.Model.HttpServer.ResponseServer;
  */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class})
+@PrepareForTest({Log.class, Gson.class})
 public class HttpServerTests {
 
     private ResponseServer testObject;

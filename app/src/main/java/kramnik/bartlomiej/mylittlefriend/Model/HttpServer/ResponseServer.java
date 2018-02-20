@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,9 +25,11 @@ public class ResponseServer extends NanoHTTPD {
     @Inject
     ResponseListener listener;
 
+    private Gson gson;
+
     /**
      * set listener
-     * @param listener
+     * @param
      */
     public void setListener(ResponseListener listener) {
         this.listener = listener;
@@ -36,6 +40,7 @@ public class ResponseServer extends NanoHTTPD {
      */
     public ResponseServer() {
         super(8080);
+        gson = new Gson();
         try {
             start();
         }
@@ -60,8 +65,9 @@ public class ResponseServer extends NanoHTTPD {
             byte[] buffer = new byte[contentLength];
             session.getInputStream().read(buffer, 0, contentLength);
             String x =new String(buffer);
+            String ip = gson.toJsonTree(x).getAsJsonObject().get("ip").getAsString();
             // TODO: 15.02.2018 convert x to Observation 
-            if(listener!=null)listener.requestIncome(new Observation(), "192.168.0.1");
+            if(listener!=null)listener.requestIncome(new Observation(), ip);
 
 
         }
