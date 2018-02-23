@@ -29,6 +29,7 @@ public class ResponseServer extends NanoHTTPD {
 
     /**
      * set listener
+     *
      * @param
      */
     public void setListener(ResponseListener listener) {
@@ -52,26 +53,26 @@ public class ResponseServer extends NanoHTTPD {
     /**
      * stop server
      */
-    public void stopServer(){
+    public void stopServer() {
         stop();
     }
 
     @Override
     public Response serve(IHTTPSession session) {
-        Log.d("HTTP Server","request recived");
+        Log.d("HTTP Server", "request recived");
 
-        try{
+        try {
             Integer contentLength = Integer.parseInt(session.getHeaders().get("content-length"));
             byte[] buffer = new byte[contentLength];
             session.getInputStream().read(buffer, 0, contentLength);
-            String x =new String(buffer);
+            String x = new String(buffer);
             String ip = gson.toJsonTree(x).getAsJsonObject().get("ip").getAsString();
             // TODO: 15.02.2018 convert x to Observation 
-            if(listener!=null)listener.requestIncome(new Observation(), ip);
+            if (listener != null) listener.requestIncome(new Observation(), ip);
 
 
         }
-        catch (Exception e){
+        catch (Exception e) {
             e.printStackTrace();
         }
         return NanoHTTPD.newFixedLengthResponse("OK");

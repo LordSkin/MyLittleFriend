@@ -43,7 +43,7 @@ public class HttpServerTests {
     private NanoHTTPD.IHTTPSession session;
 
     @Before
-    public void prepare(){
+    public void prepare() {
         testObject = new ResponseServer();
         listener = Mockito.mock(ResponseListener.class);
         testObject.setListener(listener);
@@ -51,8 +51,8 @@ public class HttpServerTests {
 
 
         session = Mockito.mock(NanoHTTPD.IHTTPSession.class);
-        Map<String, String> map = new HashMap<String,String>();
-        map.put("content-length", 0+"" );
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("content-length", 0 + "");
         Mockito.when(session.getHeaders()).thenReturn(map);
         Mockito.when(session.getInputStream()).thenReturn(new InputStream() {
             @Override
@@ -63,28 +63,28 @@ public class HttpServerTests {
     }
 
     @After
-    public void cleanAfter(){
+    public void cleanAfter() {
         testObject.stop();
     }
 
     @Test
-    public void tets1(){
+    public void tets1() {
 
-        try{
+        try {
             testObject.serve(session);
         }
-        catch (Exception e){
+        catch (Exception e) {
             Assert.fail();
         }
     }
 
     @Test
-    public void nullListenerTest(){
+    public void nullListenerTest() {
         testObject.setListener(null);
-        try{
+        try {
             testObject.serve(session);
         }
-        catch (Exception e){
+        catch (Exception e) {
             Assert.fail();
         }
     }

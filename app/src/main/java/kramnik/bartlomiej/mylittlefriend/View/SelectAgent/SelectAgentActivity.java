@@ -32,7 +32,6 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_agent);
-        ((Button)findViewById(R.id.Button1)).setOnClickListener(this);
         ((FloatingActionButton)findViewById(R.id.addAgent)).setOnClickListener(this);
 
         ((App)getApplication()).getAppComponent().inject(this);
@@ -62,10 +61,6 @@ public class SelectAgentActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view.getId()==R.id.Button1){
-            Intent intent = new Intent(this, SendCommandsActivity.class);
-            startActivity(intent);
-        }
         if(view.getId()==R.id.addAgent){
             AddAgentDialog dialog = new AddAgentDialog();
             ((App)getApplication()).getAppComponent().inject(dialog);
